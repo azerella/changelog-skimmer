@@ -1,0 +1,32 @@
+{
+  "name": "changelog-summary",
+  "version": "0.1.0",
+  "description": "Given a common changelog layout, generate a summarised alternative.",
+  "main": "index.js",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha index.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamzerella/changelog-summary.git"
+  },
+  "keywords": [
+    "changelog",
+    "changelog-generator",
+    "summary",
+    "summarise"
+  ],
+  "author": "Adam A. Zerella < adam@commandshiftr.co >",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adamzerella/changelog-summary/issues"
+  },
+  "homepage": "https://github.com/adamzerella/changelog-summary#readme",
+  "files": [
+    "index.js"
+  ]
+}
