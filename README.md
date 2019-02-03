@@ -1,21 +1,21 @@
-# changelog-summary
+# changelog-skimmer
 > 📝 Given a common changelog layout, generate a summarised alternative.
 
-Changelog summary takes a generic format changelog file path or changelog file data and compacts it into a short list. The output list will contain the version entry and first comment for that version entry.
+Changelog skimmer takes a generic format changelog file path or changelog file data and compacts it into a short list. The output list will contain the version entry and first comment for that version entry.
 
 # Install
 ```bash
 # NPM
-npm i -D changelog-summary
+npm i -D changelog-skimmer
 
 # Yarn
-yarn add --dev changelog-summary
+yarn add --dev changelog-skimmer
 ```
 
 # Usage
 ## Module
 ```javascript
-const { GenerateChangelogSummary } = require( 'changelog-summary' );
+const { GenerateChangelogSkim } = require( 'changelog-skimmer' );
 
 ( async () => {
   let changelog = "
@@ -34,7 +34,7 @@ const { GenerateChangelogSummary } = require( 'changelog-summary' );
     - Inital commit
   ";
 
-  let output = await GenerateChangelogSummary( changelog );
+  let output = await GenerateChangelogSkim( changelog );
 
   console.log( output );
 })();

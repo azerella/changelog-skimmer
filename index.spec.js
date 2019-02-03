@@ -1,10 +1,10 @@
-const { GenerateChangelogSummary } = require(  './index.js' );
+const { GenerateChangelogSkim } = require(  './index.js' );
 
 const Expect = require( 'chai' ).expect;
 const Path = require( 'path' );
 const Fsp = require( 'fs' ).promises;
 
-describe( 'GenerateChangelogSummary()', () => {
+describe( 'GenerateChangelogSkim()', () => {
     let fixtureComplex = `## 0.0.42
 Authentication:
 
@@ -54,26 +54,29 @@ Accessibility:
     
 
     it( 'Should return empty string given a empty file', async () => {
-        Expect( await GenerateChangelogSummary( fixtureEmpty ) ).to.equal( '' );
+        Expect( await GenerateChangelogSkim( fixtureEmpty ) ).to.equal( '' );
     });
 
+    it( 'Should throw if a filepath and file data is provided', async () => {
+        Expect( await GenerateChangelogSkim( 'abc', 'def' ) ).to.throw( 'Please provide either a filepath or the file data.' );
+    });
     
     it( 'Should return empty string given an empty string', async () => {
-        Expect( await GenerateChangelogSummary( `` ) ).to.equal( `` );
+        Expect( await GenerateChangelogSkim( `` ) ).to.equal( `` );
     });
 
 
-    it( 'Should return a summary given a simple changelog file', async () => {
-        Expect( await GenerateChangelogSummary( fixtureSimple ) ).to.equal( '' );
+    it( 'Should return a Skimmer given a simple changelog file', async () => {
+        Expect( await GenerateChangelogSkim( fixtureSimple ) ).to.equal( '' );
     });
     
 
-    it( 'Should return a summary given a complex changelog file', async () => {
-        Expect( await GenerateChangelogSummary( fixtureComplex ) ).to.equal( '' );
+    it( 'Should return a Skimmer given a complex changelog file', async () => {
+        Expect( await GenerateChangelogSkim( fixtureComplex ) ).to.equal( '' );
     });
 
 
     it( 'Should return relevant output given changelog file data', async () => {
-        Expect( await GenerateChangelogSummary( `## 1.0.1\n\n- Updated README.md\n\n##1.0.0` ) ).to.equal( '' );
+        Expect( await GenerateChangelogSkim( `## 1.0.1\n\n- Updated README.md\n\n##1.0.0` ) ).to.equal( '' );
     });
 });

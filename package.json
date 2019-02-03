@@ -1,5 +1,5 @@
 {
-  "name": "changelog-summary",
+  "name": "changelog-skimmer",
   "version": "0.1.0",
   "description": "Given a common changelog layout, generate a summarised alternative.",
   "main": "index.js",
@@ -12,20 +12,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adamzerella/changelog-summary.git"
+    "url": "git+https://github.com/adamzerella/changelog-skimmer.git"
   },
   "keywords": [
     "changelog",
     "changelog-generator",
+    "skimmer",
     "summary",
     "summarise"
   ],
   "author": "Adam A. Zerella < adam@commandshiftr.co >",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adamzerella/changelog-summary/issues"
+    "url": "https://github.com/adamzerella/changelog-skimmer/issues"
   },
-  "homepage": "https://github.com/adamzerella/changelog-summary#readme",
+  "homepage": "https://github.com/adamzerella/changelog-skimmer#readme",
   "files": [
     "index.js"
   ]
