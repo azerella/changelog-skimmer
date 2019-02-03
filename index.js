@@ -27,4 +27,32 @@ const GenerateChangelogSkim = async ( filePath, fileData ) => {
     return content;
 };
 
+(async () => {
+    let file = await Fsp.readFile( `_fixture.md`, `utf-8` );
+
+    // Expression to match all possible version codes given semver syntax.
+    let versionExpression = /## \d*\.?\d*\.?\d+$/g;
+    // Array containing all versions given a changelog file
+    let versionMatchesArray = file.match( versionExpression );
+
+
+    // Expression to match all possible sub-headings
+    let subHeadingExpression = /### .*$/gm;
+    // Array containing all sub-headings given a changelog file
+    let subHeadingArray = file.match( subHeadingExpression );
+
+
+    // Expression to match all possible line items
+    let lineItemExpression = /- .+$/gm;
+    // Array containing all line items given a changelog file
+    let lineItemArray = file.match( lineItemExpression );
+
+    // let test = [ ...versionMatchesArray, ...subHeadingArray, ...lineItemArray ];
+    // console.log( test );
+
+    //Match all before next version 
+    // console.log( file.match( /(## \d*\.?\d*\.?\d+).*(?=## \d*\.?\d*\.?\d+)/sgm ) );
+
+})();
+
 module.exports.GenerateChangelogSkim = GenerateChangelogSkim;
