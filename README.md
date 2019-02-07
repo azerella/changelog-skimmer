@@ -3,6 +3,7 @@
 
 Changelog skimmer takes a generic format changelog file path or changelog file data and compacts it into a short list. The output list will contain the version entry and **first** comment for that entry.
 
+
 # Install
 ```bash
 # NPM
@@ -13,6 +14,8 @@ yarn add --dev changelog-skimmer
 ```
 
 # Usage
+Similar to what is documented with [changelog-parser](https://www.npmjs.com/package/changelog-parser), the changelog standards expected are inspired by [keepachangelog.com](https://keepachangelog.com/en/1.0.0/).
+
 ## Module
 ```javascript
 const { GenerateChangelogSkim } = require( 'changelog-skimmer' );
@@ -53,6 +56,7 @@ let changelog = `;
 - Item 7
 ```
 
+
 # Tests
 ```node
 # NPM
@@ -61,6 +65,7 @@ npm test
 # Yarn
 yarn test
 ```
+
 
 # Contributors
 <div style="display:inline;">
