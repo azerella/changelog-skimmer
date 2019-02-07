@@ -1,7 +1,7 @@
 # changelog-skimmer
 > 📝 Given a common changelog layout, generate a summarised alternative.
 
-Changelog skimmer takes a generic format changelog file path or changelog file data and compacts it into a short list. The output list will contain the version entry and first comment for that version entry.
+Changelog skimmer takes a generic format changelog file path or changelog file data and compacts it into a short list. The output list will contain the version entry and **first** comment for that entry.
 
 # Install
 ```bash
@@ -17,34 +17,40 @@ yarn add --dev changelog-skimmer
 ```javascript
 const { GenerateChangelogSkim } = require( 'changelog-skimmer' );
 
-( async () => {
-  let changelog = "
-    ## 1.1.2
+let changelog = `;
+  ## 15.5.1
 
-    - Refactored src init script
-    - Improved comments
+  ### SUB-HEADING ( Category )
+  - Item 1
+  - Item 2
 
-    ## 1.0.1
+  ## 15.5.0
 
-    - Updated README instructions.
-    - Upgraded packages.
+  ### SUB-HEADING ( Category )
+  - Item 6
+  - Item 2
 
-    ## 1.0.0
+  ### SUB-HEADING ( Category )
+  - Item 7
+  - Item 14`
 
-    - Inital commit
-  ";
-
+(async () => {
   let output = await GenerateChangelogSkim( changelog );
-
+  
   console.log( output );
 })();
 ```
 
 ### Yields
 ```bash
-  * v1.1.2 - Refactored src init script
-  * v1.0.1 - Updated README instructions
-  * v1.0.0 - Inital commit
+## 15.5.1
+
+- Item 1
+
+## 15.5.0
+
+- Item 6
+- Item 7
 ```
 
 # Tests

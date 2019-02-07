@@ -1,82 +1,144 @@
-const { GenerateChangelogSkim } = require(  './index.js' );
+const { GenerateChangelogSkim } = require(  `./index.js` );
 
-const Expect = require( 'chai' ).expect;
-const Path = require( 'path' );
-const Fsp = require( 'fs' ).promises;
+const Expect = require( `chai` ).expect;
+const Path = require( `path` );
+const Fsp = require( `fs` ).promises;
 
-describe( 'GenerateChangelogSkim()', () => {
-    let fixtureComplex = `## 0.0.42
-Authentication:
+describe( `GenerateChangelogSkim()`, () => {
+    // Fixture filenames
+    let fixtStandardFileName = Path.join( __dirname, `fixtStandard.md` );
+    let fixtEmptyFileName = Path.join( __dirname, `fixtEmpty.md` );
+    let fixtStarItemFileName = Path.join( __dirname, `fixtStarItems.md` );
+    let fixtAdvancedFileName = Path.join( __dirname, `fixtAdvanced.md` );
 
--   Lowered the resource requirements for the apidocs-server based on data.gov.au usage.
+    // Fixture changelogs
+    let fixtEmpty = ``;
+    let fixtStandard = `## 15.5.1
 
-Ops:
+### SUB-HEADING (Category)
+- Item 1
+- Item 2
 
--   Allows gateway routes to be overiden from top level values file
--   Added 'enableCkanRedirection' switch to turn on or off Ckan redirection feature from gateway
--   Added 'global.enablePriorityClass' switch to turn on or off 'priorityClassName' on deployment templates
--   Improved responsiveness of registry-api when it's under load
--   Made the content-api accept authentication by default
+### SUB-HEADING (Category)
+- Item 3
+- Item 4
 
-## 0.0.41
+## 15.5.0
 
-Accessibility:
+### SUB-HEADING (Category)
+- Item 6
+- Item 2
 
--   Made the image and the text wrapped in a single link and the set image alt value to null for stories on the home page
--   Made navigation items screen readable by removing unnecessary aria-hidden label from menu
--   Got screen reader to say "Open Data Quality: 3/5 stars" instead of repeating star rating text
--   Stopped tab order reverting to body after tabbing through the search box`;
+### SUB-HEADING (Category)
+- Item 1
+- Item 4
 
-    let fixtureSimple = `## [1.0.0] - 2017-06-20
-### Added
-- New visual identity by [@tylerfortune8](https://github.com/tylerfortune8).
-- Version navigation.
-- Links to latest released version in previous versions.
-- "Why keep a changelog?" section.
-- "Who needs a changelog?" section.`;
+### SUB-HEADING (Category)
+- Item 7
+- Item 14`
+let fixtStarItems = `## 15.5.1
 
-    let fixtureEmpty = ``;
+### SUB-HEADING (Category)
+* Item 1
+* Item 2
+
+### SUB-HEADING (Category)
+* Item 3
+* Item 4
+
+## 15.5.0
+
+### SUB-HEADING (Category)
+* Item 6
+* Item 2
+
+### SUB-HEADING (Category)
+* Item 1
+* Item 4
+`
+let fixtAdvanced = `# changelog title
+
+A cool description (optional).
+
+## unreleased
+* foo
+
+## x.y.z - YYYY-MM-DD (or DD.MM.YYYY, D/M/YY, etc.)
+* bar
+
+## [a.b.c]
+
+### Changes
+
+* Update API
+* Fix bug #1
+
+## 2.2.3-pre.1 - 2013-02-14
+* Update API
+
+## 2.0.0-x.7.z.92 - 2013-02-14
+* bark bark
+* woof
+* arf
+
+## v1.3.0
+
+* make it so
+
+## [1.2.3](link)
+* init
+
+[a.b.c]: http://altavista.com`
 
     beforeEach( async () => {
         // Write fixture files after each test is run.
-        await Fsp.writeFile( `fixtureComplex.md`, fixtureComplex );
-        await Fsp.writeFile( `fixtureSimple.md`, fixtureSimple );
-        await Fsp.writeFile( `fixtureEmpty.md`, fixtureEmpty );
+        await Fsp.writeFile( fixtStandardFileName, fixtStandard );
+        await Fsp.writeFile( fixtStarItemFileName, fixtStarItems );
+        await Fsp.writeFile( fixtEmptyFileName, fixtEmpty );
+        await Fsp.writeFile( fixtAdvancedFileName, fixtAdvanced );
     });
 
     
     afterEach( async () => {
         // Delete fixture files after each test is run.
-        await Fsp.unlink( `fixtureComplex.md` );
-        await Fsp.unlink( `fixtureSimple.md` );
-        await Fsp.unlink( `fixtureEmpty.md` );
+        await Fsp.unlink( fixtStandardFileName );
+        await Fsp.unlink( fixtStarItemFileName );
+        await Fsp.unlink( fixtEmptyFileName );
+        await Fsp.unlink( fixtAdvancedFileName );
     });
     
 
-    it( 'Should return empty string given a empty file', async () => {
-        Expect( await GenerateChangelogSkim( fixtureEmpty ) ).to.equal( '' );
-    });
-
-    it( 'Should throw if a filepath and file data is provided', async () => {
-        Expect( await GenerateChangelogSkim( 'abc', 'def' ) ).to.throw( 'Please provide either a filepath or the file data.' );
-    });
-    
-    it( 'Should return empty string given an empty string', async () => {
-        Expect( await GenerateChangelogSkim( `` ) ).to.equal( `` );
+    it( `Should return first item per sub-heading given a valid changelog with '-' line items.`, async () => {
+        Expect( await GenerateChangelogSkim( fixtStandardFileName ) ).to.equal( `## 15.5.1\n- Item 1\n- Item 3\n\n## 15.5.0\n- Item 6\n- Item 1\n- Item 7` );
     });
 
 
-    it( 'Should return a Skimmer given a simple changelog file', async () => {
-        Expect( await GenerateChangelogSkim( fixtureSimple ) ).to.equal( '' );
-    });
-    
-
-    it( 'Should return a Skimmer given a complex changelog file', async () => {
-        Expect( await GenerateChangelogSkim( fixtureComplex ) ).to.equal( '' );
+    it( `Should return first item per sub-heading given a valid changelog with '*' line items.`, async () => {
+        Expect( await GenerateChangelogSkim( fixtStarItemFileName ) ).to.equal( `` );
     });
 
 
-    it( 'Should return relevant output given changelog file data', async () => {
-        Expect( await GenerateChangelogSkim( `## 1.0.1\n\n- Updated README.md\n\n##1.0.0` ) ).to.equal( '' );
+    it( `Should return first item per sub-heading given a valid complicated changelog.`, async () => {
+        Expect( await GenerateChangelogSkim( fixtAdvancedFileName ) ).to.equal( `` );
+    });
+
+
+    it( `Should return an empty string given a empty changelog with.`, async () => {
+        try {
+            await GenerateChangelogSkim( fixtEmptyFileName );
+        }
+        catch ( error ) {
+            Expect( error.message ).to.equal( `Changelog is empty ?` );
+        }
+    });
+
+
+    it( `Should return an ENOENT exception given non-existant file`, async () => {
+        try {
+            await GenerateChangelogSkim( `/dude-what-is-this-file-path?` );
+        }
+        catch ( error ) {
+            Expect( error.message ).to.equal( `ENOENT: no such file or directory, open \'/dude-what-is-this-file-path?\'` );
+        }
     });
 });
