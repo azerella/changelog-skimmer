@@ -123,7 +123,7 @@ A cool description (optional).
     });
 
 
-    it( `Should return an empty string given a empty changelog with.`, async () => {
+    it( `Should return an empty string given a empty changelog file.`, async () => {
         try {
             await GenerateChangelogSkim( fixtEmptyFileName );
         }
@@ -135,10 +135,10 @@ A cool description (optional).
 
     it( `Should return an ENOENT exception given non-existant file`, async () => {
         try {
-            await GenerateChangelogSkim( `/dude-what-is-this-file-path?` );
+            await GenerateChangelogSkim( `${ Path.join( __dirname, `dude-what-is-this-file-path?` ) }` );
         }
         catch ( error ) {
-            Expect( error.message ).to.equal( `ENOENT: no such file or directory, open \'/dude-what-is-this-file-path?\'` );
+            Expect( error.message ).to.equal( `ENOENT: no such file or directory, open '${ Path.join( __dirname, `dude-what-is-this-file-path?` ) }'` );
         }
     });
 });
