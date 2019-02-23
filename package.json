@@ -1,6 +1,6 @@
 {
   "name": "changelog-skimmer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Given a common changelog layout, generate a summarised alternative.",
   "main": "index.js",
   "devDependencies": {
